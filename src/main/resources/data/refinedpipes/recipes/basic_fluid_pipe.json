@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "CCC",
+    "SGS",
+    "CCC"
+  ],
+  "key": {
+    "C": {
+      "item": "minecraft:iron_ingot"
+    },
+    "G": {
+      "tag": "forge:glass"
+    },
+    "S": {
+      "tag": "forge:slimeballs"
+    }
+  },
+  "result": {
+    "item": "refinedpipes:basic_fluid_pipe",
+    "count": 6
+  }
+}
