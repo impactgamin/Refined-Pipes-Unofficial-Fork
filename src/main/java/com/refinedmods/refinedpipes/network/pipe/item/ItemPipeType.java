@@ -48,11 +48,11 @@ public enum ItemPipeType {
     public BlockEntityType<ItemPipeBlockEntity> getBlockEntityType() {
         switch (this) {
             case BASIC:
-                return RefinedPipesBlockEntities.BASIC_ITEM_PIPE;
+                return RefinedPipesBlockEntities.BASIC_ITEM_PIPE.get();
             case IMPROVED:
-                return RefinedPipesBlockEntities.IMPROVED_ITEM_PIPE;
+                return RefinedPipesBlockEntities.IMPROVED_ITEM_PIPE.get();
             case ADVANCED:
-                return RefinedPipesBlockEntities.ADVANCED_ITEM_PIPE;
+                return RefinedPipesBlockEntities.ADVANCED_ITEM_PIPE.get();
             default:
                 throw new RuntimeException("?");
         }

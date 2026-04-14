@@ -1,8 +1,8 @@
-{
+﻿{
   "__comment": "Model generated using MrCrayfish's Model Creator (https://mrcrayfish.com/tools?id=mc)",
   "parent": "block/block",
   "textures": {
-    "1": "refinedpipes:blocks/pipe/attachment/inventory_attachment"
+    "1": "refinedpipes:block/pipe/attachment/inventory_attachment"
   },
   "elements": [
     {
@@ -33,3 +33,4 @@
     }
   ]
 }
+

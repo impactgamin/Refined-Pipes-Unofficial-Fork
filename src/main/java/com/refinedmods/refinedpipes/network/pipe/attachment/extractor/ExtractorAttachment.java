@@ -23,9 +23,8 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.fluids.capability.IFluidHandler;
-import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import org.apache.commons.lang3.tuple.Pair;
@@ -116,10 +115,10 @@ public class ExtractorAttachment extends Attachment {
         }
 
         if (network instanceof ItemNetwork) {
-            blockEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, getDirection().getOpposite())
+            blockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER, getDirection().getOpposite())
                 .ifPresent(itemHandler -> update((ItemNetwork) network, destinationPos, itemHandler));
         } else if (network instanceof FluidNetwork) {
-            blockEntity.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, getDirection().getOpposite())
+            blockEntity.getCapability(ForgeCapabilities.FLUID_HANDLER, getDirection().getOpposite())
                 .ifPresent(fluidHandler -> update((FluidNetwork) network, fluidHandler));
         }
     }
@@ -222,10 +221,13 @@ public class ExtractorAttachment extends Attachment {
         if (blacklistWhitelist == BlacklistWhitelist.WHITELIST) {
             for (int i = 0; i < itemFilter.getSlots(); ++i) {
                 ItemStack filtered = itemFilter.getStackInSlot(i);
+                if (filtered.isEmpty()) {
+                    continue;
+                }
 
-                boolean equals = filtered.sameItem(stack);
+                boolean equals = ItemStack.isSameItem(filtered, stack);
                 if (exactMode) {
-                    equals = equals && ItemStack.tagMatches(filtered, stack);
+                    equals = equals && ItemStack.isSameItemSameTags(filtered, stack);
                 }
 
                 if (equals) {
@@ -237,10 +239,13 @@ public class ExtractorAttachment extends Attachment {
         } else if (blacklistWhitelist == BlacklistWhitelist.BLACKLIST) {
             for (int i = 0; i < itemFilter.getSlots(); ++i) {
                 ItemStack filtered = itemFilter.getStackInSlot(i);
+                if (filtered.isEmpty()) {
+                    continue;
+                }
 
-                boolean equals = filtered.sameItem(stack);
+                boolean equals = ItemStack.isSameItem(filtered, stack);
                 if (exactMode) {
-                    equals = equals && ItemStack.tagMatches(filtered, stack);
+                    equals = equals && ItemStack.isSameItemSameTags(filtered, stack);
                 }
 
                 if (equals) {

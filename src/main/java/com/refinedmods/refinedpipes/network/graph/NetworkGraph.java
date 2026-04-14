@@ -13,6 +13,7 @@ public class NetworkGraph {
     private final Network network;
 
     private Set<Pipe> pipes = new HashSet<>();
+    private final Map<BlockPos, Pipe> pipesByPos = new HashMap<>();
     private Map<DestinationType, List<Destination>> destinations = new HashMap<>();
 
     public NetworkGraph(Network network) {
@@ -25,6 +26,8 @@ public class NetworkGraph {
         NetworkGraphScannerResult result = scanner.scanAt(originLevel, originPos);
 
         this.pipes = result.getFoundPipes();
+        pipesByPos.clear();
+        this.pipes.forEach(pipe -> pipesByPos.put(pipe.getPos(), pipe));
 
         result.getNewPipes().forEach(p -> p.joinNetwork(network));
         result.getRemovedPipes().forEach(Pipe::leaveNetwork);
@@ -40,6 +43,10 @@ public class NetworkGraph {
 
     public Set<Pipe> getPipes() {
         return pipes;
+    }
+
+    public Pipe getPipe(BlockPos pos) {
+        return pipesByPos.get(pos);
     }
 
     public List<Destination> getDestinations(DestinationType type) {

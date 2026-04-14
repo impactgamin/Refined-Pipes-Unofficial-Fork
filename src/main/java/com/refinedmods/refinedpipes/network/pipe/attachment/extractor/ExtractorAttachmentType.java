@@ -123,15 +123,15 @@ public enum ExtractorAttachmentType {
     Item getItem() {
         switch (this) {
             case BASIC:
-                return RefinedPipesItems.BASIC_EXTRACTOR_ATTACHMENT;
+                return RefinedPipesItems.BASIC_EXTRACTOR_ATTACHMENT.get();
             case IMPROVED:
-                return RefinedPipesItems.IMPROVED_EXTRACTOR_ATTACHMENT;
+                return RefinedPipesItems.IMPROVED_EXTRACTOR_ATTACHMENT.get();
             case ADVANCED:
-                return RefinedPipesItems.ADVANCED_EXTRACTOR_ATTACHMENT;
+                return RefinedPipesItems.ADVANCED_EXTRACTOR_ATTACHMENT.get();
             case ELITE:
-                return RefinedPipesItems.ELITE_EXTRACTOR_ATTACHMENT;
+                return RefinedPipesItems.ELITE_EXTRACTOR_ATTACHMENT.get();
             case ULTIMATE:
-                return RefinedPipesItems.ULTIMATE_EXTRACTOR_ATTACHMENT;
+                return RefinedPipesItems.ULTIMATE_EXTRACTOR_ATTACHMENT.get();
             default:
                 throw new RuntimeException("?");
         }

@@ -1,157 +1,132 @@
-buildscript {
-    repositories {
-        maven { url = 'https://maven.minecraftforge.net' }
-        mavenCentral()
-    }
-    dependencies {
-        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
-    }
-}
-
 plugins {
-    id 'com.matthewprenger.cursegradle' version '1.4.0'
+    id 'eclipse'
+    id 'maven-publish'
+    id 'net.minecraftforge.gradle' version '[6.0.24,6.2)'
 }
-
-repositories {
-    maven {
-        url = "https://dvs1.progwml6.com/files/maven/"
-    }
-    flatDir { dirs 'deps' }
-}
-
-apply plugin: 'net.minecraftforge.gradle'
-apply plugin: 'eclipse'
-apply plugin: 'maven-publish'
 
 group = 'com.refinedmods'
-archivesBaseName = 'refinedpipes'
-version = '0.6.3'
+version = '0.6.4+1.20.1'
+base {
+    archivesName = 'refinedpipes'
+}
 
 if (System.getenv('GITHUB_SHA') != null) {
     version += '+' + System.getenv('GITHUB_SHA').substring(0, 7)
 }
 
 if (System.getenv('RELEASE') != null) {
-    version = System.getenv('RELEASE').substring(1) // remove 'v'
+    version = System.getenv('RELEASE').substring(1)
 }
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
+println "Java: ${System.getProperty 'java.version'} JVM: ${System.getProperty 'java.vm.version'} (${System.getProperty 'java.vendor'}) Arch: ${System.getProperty 'os.arch'}"
+
 minecraft {
-    mappings channel: 'official', version: '1.18.2'
+    mappings channel: 'official', version: '1.20.1'
 
     runs {
-        client {
+        configureEach {
             workingDirectory project.file('run')
-            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
+            property 'forge.logging.markers', 'REGISTRIES'
             property 'forge.logging.console.level', 'debug'
             mods {
                 refinedpipes {
                     source sourceSets.main
                 }
             }
+        }
+
+        client {
+            property 'forge.enabledGameTestNamespaces', 'refinedpipes'
         }
 
         server {
-            workingDirectory project.file('run')
-            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
-            property 'forge.logging.console.level', 'debug'
-            mods {
-                refinedpipes {
-                    source sourceSets.main
-                }
-            }
+            property 'forge.enabledGameTestNamespaces', 'refinedpipes'
+            args '--nogui'
         }
 
         data {
-            workingDirectory project.file('run')
-            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
-            property 'forge.logging.console.level', 'debug'
-            args '--mod', 'refinedpipes', '--all', '--output', file('src/generated/resources/')
-            mods {
-                refinedpipes {
-                    source sourceSets.main
-                }
-            }
+            args '--mod', 'refinedpipes', '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
         }
     }
 }
 
-processResources {
-    inputs.property 'version', project.version
+sourceSets.main.resources { srcDir 'src/generated/resources' }
 
+repositories {
+    maven {
+        url = 'https://dvs1.progwml6.com/files/maven/'
+    }
+    flatDir { dirs 'deps' }
+}
+
+dependencies {
+    minecraft 'net.minecraftforge:forge:1.20.1-47.2.0'
+}
+
+tasks.named('processResources', ProcessResources).configure {
+    inputs.property 'version', project.version
     filesMatching('META-INF/mods.toml') {
         expand 'version': project.version
     }
 }
 
-dependencies {
-    minecraft 'net.minecraftforge:forge:1.18.2-40.0.32'
-    runtimeOnly fg.deobf("mezz.jei:jei-1.18.2:9.5.4.171")
-}
-
 jar {
     manifest {
         attributes([
-                "Specification-Title"     : "refinedpipes",
-                "Specification-Vendor"    : "refinedmods",
-                "Specification-Version"   : "1",
-                "Implementation-Title"    : project.name,
-                "Implementation-Version"  : "${version}",
-                "Implementation-Vendor"   : "refinedmods",
-                "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
+                'Specification-Title'     : 'refinedpipes',
+                'Specification-Vendor'    : 'Arctic Logistics (fork; original by Refined Mods)',
+                'Specification-Version' : '1',
+                'Implementation-Title'    : project.name,
+                'Implementation-Version'  : "${version}",
+                'Implementation-Vendor' : 'Arctic Logistics (fork; original by Refined Mods)',
+                'Implementation-Timestamp': new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
         ])
-    }
-}
-
-if (System.getenv("CURSEFORGE_TOKEN") != null) {
-    curseforge {
-        apiKey = System.getenv("CURSEFORGE_TOKEN")
-        project {
-            id = '370696'
-            changelog = System.getenv("CHANGELOG")
-            changelogType = 'markdown'
-            releaseType = project.version.toString().contains('beta') ? 'beta' : (project.version.toString().contains('alpha') ? 'alpha' : 'release')
-            addGameVersion "1.18.2"
-            mainArtifact(jar) {
-                displayName = "v$project.version"
-            }
-        }
     }
 }
 
 publishing {
     repositories {
         maven {
-            name = "GitHubPackages"
-            url = uri("https://maven.pkg.github.com/refinedmods/refinedpipes")
+            name = 'GitHubPackages'
+            url = uri('https://maven.pkg.github.com/refinedmods/refinedpipes')
             credentials {
-                username = System.getenv("GITHUB_ACTOR")
-                password = System.getenv("GITHUB_TOKEN")
+                username = System.getenv('GITHUB_ACTOR')
+                password = System.getenv('GITHUB_TOKEN')
             }
         }
         maven {
-            name = "CreeperHost"
-            url = uri("https://maven.creeperhost.net/release")
+            name = 'CreeperHost'
+            url = uri('https://maven.creeperhost.net/release')
             credentials {
-                username = System.getenv("CREEPERHOST_MAVEN_USERNAME")
-                password = System.getenv("CREEPERHOST_MAVEN_TOKEN")
+                username = System.getenv('CREEPERHOST_MAVEN_USERNAME')
+                password = System.getenv('CREEPERHOST_MAVEN_TOKEN')
             }
         }
     }
     publications {
         gpr(MavenPublication) {
-            from(components.java)
+            from components.java
         }
     }
 }
 
-tasks.withType(JavaCompile) {
+tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8'
 }
 
-tasks.withType(Javadoc) {
+tasks.withType(Javadoc).configureEach {
     options.encoding = 'UTF-8'
 }
 
-jar.finalizedBy('reobfJar')
+tasks.named('jar', Jar).configure {
+    finalizedBy 'reobfJar'
+}
+
+// Compatibility alias: keep old command working.
+tasks.register('rundev') {
+    group = 'forgegradle runs'
+    description = 'Alias for runClient'
+    dependsOn 'runClient'
+}

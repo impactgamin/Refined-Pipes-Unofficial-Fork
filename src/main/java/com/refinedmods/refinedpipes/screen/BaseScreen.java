@@ -1,10 +1,10 @@
 package com.refinedmods.refinedpipes.screen;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.refinedmods.refinedpipes.container.BaseContainerMenu;
 import com.refinedmods.refinedpipes.container.slot.FluidFilterSlot;
 import com.refinedmods.refinedpipes.render.FluidRenderer;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
@@ -16,7 +16,7 @@ public abstract class BaseScreen<T extends BaseContainerMenu> extends AbstractCo
     }
 
     @Override
-    protected void renderBg(PoseStack poseStack, float partialTicks, int mouseX, int mouseY) {
+    protected void renderBg(GuiGraphics graphics, float partialTick, int mouseX, int mouseY) {
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 
         for (FluidFilterSlot slot : menu.getFluidSlots()) {
@@ -30,7 +30,7 @@ public abstract class BaseScreen<T extends BaseContainerMenu> extends AbstractCo
     }
 
     @Override
-    protected void renderLabels(PoseStack poseStack, int mouseX, int mouseY) {
+    protected void renderLabels(GuiGraphics graphics, int mouseX, int mouseY) {
         for (FluidFilterSlot slot : menu.getFluidSlots()) {
             FluidStack stack = slot.getFluidInventory().getFluid(slot.getSlotIndex());
             if (stack.isEmpty()) {
@@ -41,7 +41,7 @@ public abstract class BaseScreen<T extends BaseContainerMenu> extends AbstractCo
                 continue;
             }
 
-            renderTooltip(poseStack, stack.getDisplayName(), mouseX - leftPos, mouseY - topPos);
+            graphics.renderTooltip(this.font, stack.getDisplayName(), mouseX + leftPos, mouseY + topPos);
         }
     }
 }

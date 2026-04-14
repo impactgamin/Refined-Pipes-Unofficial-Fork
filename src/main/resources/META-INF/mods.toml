@@ -1,13 +1,29 @@
 modLoader="javafml"
-loaderVersion="[40,)"
+loaderVersion="[47,)"
 issueTrackerURL="https://github.com/refinedmods/refinedpipes"
 license="MIT"
+displayURL="https://github.com/refinedmods/refinedpipes"
+credits="Based on Refined Pipes by Refined Mods (Raoul van der Berg et al.). This fork (Arctic's Logistics) ports and maintains the mod for newer Minecraft versions. Original source and license: MIT, Copyright Refined Mods — see LICENSE.md in the jar and repository."
+authors="Refined Mods (original), Arctic Logistics (port)"
+
 [[mods]]
 modId="refinedpipes"
 version="${version}"
-displayName="Refined Pipes"
-displayURL="https://refinedmods.com/refined-pipes"
-authors="Refined Mods"
+displayName="Refined Pipes (Arctic's Logistics)"
 description='''
-Refined Pipes is a Minecraft mod that adds pipes.
+Port of Refined Pipes for Minecraft 1.20.1. Original mod by Refined Mods — pipes for items, fluids, and energy. Licensed under the MIT License; see LICENSE.md.
 '''
+
+[[dependencies.refinedpipes]]
+modId="forge"
+mandatory=true
+versionRange="[47,)"
+ordering="NONE"
+side="BOTH"
+
+[[dependencies.refinedpipes]]
+modId="minecraft"
+mandatory=true
+versionRange="[1.20.1,1.21)"
+ordering="NONE"
+side="BOTH"

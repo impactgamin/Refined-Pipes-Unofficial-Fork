@@ -10,7 +10,7 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.energy.CapabilityEnergy;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.energy.IEnergyStorage;
 import org.jetbrains.annotations.Nullable;
 
@@ -21,7 +21,6 @@ public class EnergyPipeBlock extends PipeBlock implements EntityBlock {
         super(shapeCache);
 
         this.type = type;
-        this.setRegistryName(type.getId());
     }
 
     public EnergyPipeType getType() {
@@ -50,12 +49,12 @@ public class EnergyPipeBlock extends PipeBlock implements EntityBlock {
 
     @Override
     protected boolean hasInvConnection(LevelAccessor level, BlockPos pos, Direction direction) {
-        BlockEntity facingBlockEntityy = level.getBlockEntity(pos.relative(direction));
-        if (facingBlockEntityy == null) {
+        BlockEntity facingBlockEntity = level.getBlockEntity(pos.relative(direction));
+        if (facingBlockEntity == null) {
             return false;
         }
 
-        IEnergyStorage energyStorage = facingBlockEntityy.getCapability(CapabilityEnergy.ENERGY, direction.getOpposite()).orElse(null);
+        IEnergyStorage energyStorage = facingBlockEntity.getCapability(ForgeCapabilities.ENERGY, direction.getOpposite()).orElse(null);
         if (energyStorage == null) {
             return false;
         }

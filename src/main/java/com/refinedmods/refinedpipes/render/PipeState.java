@@ -2,12 +2,12 @@ package com.refinedmods.refinedpipes.render;
 
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.state.BlockState;
 
 import javax.annotation.Nullable;
 import java.util.Arrays;
 import java.util.Objects;
-import java.util.Random;
 
 public class PipeState {
     @Nullable
@@ -15,9 +15,9 @@ public class PipeState {
     @Nullable
     private final ResourceLocation[] attachmentState;
     private final Direction side;
-    private final Random rand;
+    private final RandomSource rand;
 
-    public PipeState(@Nullable BlockState state, @Nullable ResourceLocation[] attachmentState, Direction side, Random rand) {
+    public PipeState(@Nullable BlockState state, @Nullable ResourceLocation[] attachmentState, Direction side, RandomSource rand) {
         this.state = state;
         this.attachmentState = attachmentState;
         this.side = side;
@@ -51,7 +51,7 @@ public class PipeState {
         return side;
     }
 
-    public Random getRand() {
+    public RandomSource getRand() {
         return rand;
     }
 

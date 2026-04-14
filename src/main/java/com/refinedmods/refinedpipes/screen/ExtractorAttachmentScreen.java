@@ -1,7 +1,6 @@
 package com.refinedmods.refinedpipes.screen;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.refinedmods.refinedpipes.RefinedPipes;
 import com.refinedmods.refinedpipes.container.ExtractorAttachmentContainerMenu;
 import com.refinedmods.refinedpipes.network.pipe.attachment.extractor.BlacklistWhitelist;
@@ -11,12 +10,11 @@ import com.refinedmods.refinedpipes.network.pipe.attachment.extractor.RoutingMod
 import com.refinedmods.refinedpipes.screen.widget.IconButton;
 import com.refinedmods.refinedpipes.screen.widget.IconButtonPreset;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 
@@ -98,7 +96,7 @@ public class ExtractorAttachmentScreen extends BaseScreen<ExtractorAttachmentCon
                 btn -> setRoutingMode((IconButton) btn, menu.getRoutingMode().next())
             ));
 
-            routingModeButton.active = menu.getExtractorAttachmentType().getCanSetWhitelistBlacklist();
+            routingModeButton.active = menu.getExtractorAttachmentType().getCanSetRoutingMode();
 
             plusButton = this.addRenderableWidget(new IconButton(
                 this.leftPos + 125,
@@ -106,7 +104,7 @@ public class ExtractorAttachmentScreen extends BaseScreen<ExtractorAttachmentCon
                 IconButtonPreset.SMALL,
                 198,
                 19,
-                new TextComponent("+"),
+                Component.literal("+"),
                 btn -> updateStackSize(1)
             ));
 
@@ -116,7 +114,7 @@ public class ExtractorAttachmentScreen extends BaseScreen<ExtractorAttachmentCon
                 IconButtonPreset.SMALL,
                 198,
                 34,
-                new TextComponent("-"),
+                Component.literal("-"),
                 btn -> updateStackSize(-1)
             ));
 
@@ -139,8 +137,12 @@ public class ExtractorAttachmentScreen extends BaseScreen<ExtractorAttachmentCon
             newAmount = menu.getExtractorAttachmentType().getItemsToExtract();
         }
 
-        minusButton.active = newAmount > 0;
-        plusButton.active = newAmount < menu.getExtractorAttachmentType().getItemsToExtract();
+        if (minusButton != null) {
+            minusButton.active = newAmount > 0;
+        }
+        if (plusButton != null) {
+            plusButton.active = newAmount < menu.getExtractorAttachmentType().getItemsToExtract();
+        }
 
         menu.setStackSize(newAmount);
     }
@@ -159,7 +161,7 @@ public class ExtractorAttachmentScreen extends BaseScreen<ExtractorAttachmentCon
     }
 
     private MutableComponent getRedstoneModeText(RedstoneMode redstoneMode) {
-        return new TranslatableComponent("misc.refinedpipes.redstone_mode." + redstoneMode.toString().toLowerCase());
+        return Component.translatable("misc.refinedpipes.redstone_mode." + redstoneMode.toString().toLowerCase());
     }
 
     private void setRedstoneMode(IconButton button, RedstoneMode redstoneMode) {
@@ -181,7 +183,7 @@ public class ExtractorAttachmentScreen extends BaseScreen<ExtractorAttachmentCon
     }
 
     private MutableComponent getBlacklistWhitelistText(BlacklistWhitelist blacklistWhitelist) {
-        return new TranslatableComponent("misc.refinedpipes.mode." + blacklistWhitelist.toString().toLowerCase());
+        return Component.translatable("misc.refinedpipes.mode." + blacklistWhitelist.toString().toLowerCase());
     }
 
     private void setBlacklistWhitelist(IconButton button, BlacklistWhitelist blacklistWhitelist) {
@@ -207,7 +209,7 @@ public class ExtractorAttachmentScreen extends BaseScreen<ExtractorAttachmentCon
     }
 
     private MutableComponent getRoutingModeText(RoutingMode routingMode) {
-        return new TranslatableComponent("misc.refinedpipes.routing_mode." + routingMode.toString().toLowerCase());
+        return Component.translatable("misc.refinedpipes.routing_mode." + routingMode.toString().toLowerCase());
     }
 
     private void setRoutingMode(IconButton button, RoutingMode routingMode) {
@@ -222,7 +224,7 @@ public class ExtractorAttachmentScreen extends BaseScreen<ExtractorAttachmentCon
     }
 
     private MutableComponent getExactModeText(boolean exactMode) {
-        return new TranslatableComponent("misc.refinedpipes.exact_mode." + (exactMode ? "on" : "off"));
+        return Component.translatable("misc.refinedpipes.exact_mode." + (exactMode ? "on" : "off"));
     }
 
     private void setExactMode(IconButton button, boolean exactMode) {
@@ -233,55 +235,57 @@ public class ExtractorAttachmentScreen extends BaseScreen<ExtractorAttachmentCon
     }
 
     @Override
-    protected void renderLabels(PoseStack poseStack, int mouseX, int mouseY) {
-        font.draw(poseStack, title.getString(), 7, 7, 4210752);
-        font.draw(poseStack, I18n.get("container.inventory"), 7, 103 - 4, 4210752);
+    protected void renderLabels(GuiGraphics graphics, int mouseX, int mouseY) {
+        graphics.drawString(font, title.getString(), 7, 7, 4210752, false);
+        graphics.drawString(font, I18n.get("container.inventory"), 7, 103 - 4, 4210752, false);
 
         if (!menu.isFluidMode()) {
-            font.draw(poseStack, "" + menu.getStackSize(), 143, 83, 4210752);
+            graphics.drawString(font, "" + menu.getStackSize(), 143, 83, 4210752, false);
         }
 
-        renderTooltip(poseStack, mouseX - leftPos, mouseY - topPos);
+        super.renderLabels(graphics, mouseX, mouseY);
+    }
+
+    @Override
+    public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
+        super.render(graphics, mouseX, mouseY, partialTicks);
 
         tooltip.clear();
 
-        if (blacklistWhitelistButton.isHoveredOrFocused()) {
-            tooltip.add(new TranslatableComponent("misc.refinedpipes.mode"));
+        if (blacklistWhitelistButton.isMouseOver(mouseX, mouseY)) {
+            tooltip.add(Component.translatable("misc.refinedpipes.mode"));
             tooltip.add(getBlacklistWhitelistText(menu.getBlacklistWhitelist()).withStyle(ChatFormatting.GRAY));
-        } else if (redstoneModeButton.isHoveredOrFocused()) {
-            tooltip.add(new TranslatableComponent("misc.refinedpipes.redstone_mode"));
+        } else if (redstoneModeButton.isMouseOver(mouseX, mouseY)) {
+            tooltip.add(Component.translatable("misc.refinedpipes.redstone_mode"));
             tooltip.add(getRedstoneModeText(menu.getRedstoneMode()).withStyle(ChatFormatting.GRAY));
-        } else if (routingModeButton != null && routingModeButton.isHoveredOrFocused()) {
-            tooltip.add(new TranslatableComponent("misc.refinedpipes.routing_mode"));
+        } else if (routingModeButton != null && routingModeButton.isMouseOver(mouseX, mouseY)) {
+            tooltip.add(Component.translatable("misc.refinedpipes.routing_mode"));
             tooltip.add(getRoutingModeText(menu.getRoutingMode()).withStyle(ChatFormatting.GRAY));
-        } else if (exactModeButton.isHoveredOrFocused()) {
-            tooltip.add(new TranslatableComponent("misc.refinedpipes.exact_mode"));
+        } else if (exactModeButton != null && exactModeButton.isMouseOver(mouseX, mouseY)) {
+            tooltip.add(Component.translatable("misc.refinedpipes.exact_mode"));
             tooltip.add(getExactModeText(menu.isExactMode()).withStyle(ChatFormatting.GRAY));
         }
 
         if (!tooltip.isEmpty()) {
-            renderComponentTooltip(poseStack, tooltip, mouseX - leftPos, mouseY - topPos);
+            graphics.renderComponentTooltip(font, tooltip, mouseX, mouseY);
         }
-
-        super.renderLabels(poseStack, mouseX, mouseY);
     }
 
     @Override
-    protected void renderBg(PoseStack poseStack, float partialTicks, int mouseX, int mouseY) {
-        renderBackground(poseStack);
+    protected void renderBg(GuiGraphics graphics, float partialTicks, int mouseX, int mouseY) {
+        renderBackground(graphics);
 
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-        RenderSystem.setShaderTexture(0, RESOURCE);
 
         int i = (this.width - this.imageWidth) / 2;
         int j = (this.height - this.imageHeight) / 2;
-        this.blit(poseStack, i, j, 0, 0, this.imageWidth, this.imageHeight);
+        graphics.blit(RESOURCE, i, j, 0, 0, this.imageWidth, this.imageHeight);
 
         int x = 43;
         int y = 18;
         for (int filterSlotId = 1; filterSlotId <= ExtractorAttachment.MAX_FILTER_SLOTS; ++filterSlotId) {
             if (filterSlotId > menu.getExtractorAttachmentType().getFilterSlots()) {
-                this.blit(poseStack, i + x, j + y, 198, 0, 18, 18);
+                graphics.blit(RESOURCE, i + x, j + y, 198, 0, 18, 18);
             }
 
             if (filterSlotId % 5 == 0) {
@@ -292,6 +296,6 @@ public class ExtractorAttachmentScreen extends BaseScreen<ExtractorAttachmentCon
             }
         }
 
-        super.renderBg(poseStack, partialTicks, mouseX, mouseY);
+        super.renderBg(graphics, partialTicks, mouseX, mouseY);
     }
 }

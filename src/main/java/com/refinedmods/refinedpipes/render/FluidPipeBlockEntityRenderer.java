@@ -14,7 +14,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.fluids.FluidAttributes;
+import net.minecraftforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.minecraftforge.fluids.FluidStack;
 
 public class FluidPipeBlockEntityRenderer implements BlockEntityRenderer<FluidPipeBlockEntity> {
@@ -40,16 +40,16 @@ public class FluidPipeBlockEntityRenderer implements BlockEntityRenderer<FluidPi
         }
 
         int light = LevelRenderer.getLightColor(blockEntity.getLevel(), blockEntity.getBlockPos());
-        FluidAttributes attributes = fluidStack.getFluid().getAttributes();
-        TextureAtlasSprite sprite = Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(attributes.getStillTexture(fluidStack));
-        int fluidColor = attributes.getColor(fluidStack);
+        IClientFluidTypeExtensions props = IClientFluidTypeExtensions.of(fluidStack.getFluid());
+        TextureAtlasSprite sprite = Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(props.getStillTexture(fluidStack));
+        int fluidColor = props.getTintColor(fluidStack);
 
         int r = fluidColor >> 16 & 0xFF;
         int g = fluidColor >> 8 & 0xFF;
         int b = fluidColor & 0xFF;
         int a = fluidColor >> 24 & 0xFF;
 
-        VertexConsumer buffer = bufferType.getBuffer(RenderType.text(sprite.atlas().location()));
+        VertexConsumer buffer = bufferType.getBuffer(RenderType.entityTranslucentCull(InventoryMenu.BLOCK_ATLAS));
 
         float fullness = blockEntity.updateAndGetRenderFullness(partialTicks);
         if (fullness == 0) {

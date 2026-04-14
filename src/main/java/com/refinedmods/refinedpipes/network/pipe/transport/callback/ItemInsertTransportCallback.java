@@ -10,7 +10,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
 import org.apache.logging.log4j.LogManager;
@@ -54,7 +54,7 @@ public class ItemInsertTransportCallback implements TransportCallback {
             return;
         }
 
-        IItemHandler itemHandler = blockEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, incomingDirection.getOpposite()).orElse(null);
+        IItemHandler itemHandler = blockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER, incomingDirection.getOpposite()).orElse(null);
         if (itemHandler == null) {
             LOGGER.warn("Destination item handler is no longer exposing a capability at " + itemHandlerPosition);
             cancelCallback.call(network, level, currentPos, cancelCallback);

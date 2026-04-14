@@ -58,7 +58,7 @@ public abstract class Network {
     }
 
     public Pipe getPipe(BlockPos pos) {
-        return graph.getPipes().stream().filter(p -> p.getPos().equals(pos)).findFirst().orElse(null);
+        return graph.getPipe(pos);
     }
 
     public abstract void onMergedWith(Network mainNetwork);

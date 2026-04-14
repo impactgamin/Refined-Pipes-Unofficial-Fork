@@ -94,15 +94,15 @@ public enum EnergyPipeType {
     public BlockEntityType<EnergyPipeBlockEntity> getBlockEntityType() {
         switch (this) {
             case BASIC:
-                return RefinedPipesBlockEntities.BASIC_ENERGY_PIPE;
+                return RefinedPipesBlockEntities.BASIC_ENERGY_PIPE.get();
             case IMPROVED:
-                return RefinedPipesBlockEntities.IMPROVED_ENERGY_PIPE;
+                return RefinedPipesBlockEntities.IMPROVED_ENERGY_PIPE.get();
             case ADVANCED:
-                return RefinedPipesBlockEntities.ADVANCED_ENERGY_PIPE;
+                return RefinedPipesBlockEntities.ADVANCED_ENERGY_PIPE.get();
             case ELITE:
-                return RefinedPipesBlockEntities.ELITE_ENERGY_PIPE;
+                return RefinedPipesBlockEntities.ELITE_ENERGY_PIPE.get();
             case ULTIMATE:
-                return RefinedPipesBlockEntities.ULTIMATE_ENERGY_PIPE;
+                return RefinedPipesBlockEntities.ULTIMATE_ENERGY_PIPE.get();
             default:
                 throw new RuntimeException("?");
         }

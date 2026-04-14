@@ -13,8 +13,7 @@ import net.minecraft.world.Containers;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.client.model.data.IModelData;
-import net.minecraftforge.client.model.data.ModelDataMap;
+import net.minecraftforge.client.model.data.ModelData;
 import net.minecraftforge.client.model.data.ModelProperty;
 
 import javax.annotation.Nonnull;
@@ -55,7 +54,6 @@ public abstract class PipeBlockEntity extends BaseBlockEntity {
         }
     }
 
-    // TODO: remove when https://github.com/MinecraftForge/MinecraftForge/pull/8303/files is merged
     private boolean unloaded;
 
     @Override
@@ -89,8 +87,10 @@ public abstract class PipeBlockEntity extends BaseBlockEntity {
 
     @Nonnull
     @Override
-    public IModelData getModelData() {
-        return new ModelDataMap.Builder().withInitial(ATTACHMENTS_PROPERTY, getAttachmentManager().getState()).build();
+    public ModelData getModelData() {
+        return ModelData.builder()
+            .with(ATTACHMENTS_PROPERTY, getAttachmentManager().getState())
+            .build();
     }
 
     @Override

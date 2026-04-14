@@ -1,6 +1,5 @@
 package com.refinedmods.refinedpipes.item;
 
-import com.refinedmods.refinedpipes.RefinedPipes;
 import com.refinedmods.refinedpipes.network.pipe.attachment.AttachmentFactory;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;
@@ -15,11 +14,8 @@ public class AttachmentItem extends Item {
     private final AttachmentFactory type;
 
     public AttachmentItem(AttachmentFactory type) {
-        super(new Item.Properties().tab(RefinedPipes.CREATIVE_MODE_TAB));
-
+        super(new Item.Properties());
         this.type = type;
-
-        this.setRegistryName(type.getItemId());
     }
 
     @Override

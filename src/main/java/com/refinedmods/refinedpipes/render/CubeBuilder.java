@@ -2,6 +2,7 @@ package com.refinedmods.refinedpipes.render;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.Direction;
 
@@ -144,7 +145,7 @@ public class CubeBuilder {
                 break;
         }
 
-        this.putVertex(builder, poseStack, r, g, b, a, light, x, y, z, u, v);
+        this.putVertex(builder, poseStack, face, r, g, b, a, light, x, y, z, u, v);
     }
 
     // uv.u2, uv.v1
@@ -171,7 +172,7 @@ public class CubeBuilder {
                 break;
         }
 
-        this.putVertex(builder, poseStack, r, g, b, a, light, x, y, z, u, v);
+        this.putVertex(builder, poseStack, face, r, g, b, a, light, x, y, z, u, v);
     }
 
     // uv.u2, uv.v2
@@ -200,7 +201,7 @@ public class CubeBuilder {
                 break;
         }
 
-        this.putVertex(builder, poseStack, r, g, b, a, light, x, y, z, u, v);
+        this.putVertex(builder, poseStack, face, r, g, b, a, light, x, y, z, u, v);
     }
 
     // uv.u1, uv.v2
@@ -229,14 +230,16 @@ public class CubeBuilder {
                 break;
         }
 
-        this.putVertex(builder, poseStack, r, g, b, a, light, x, y, z, u, v);
+        this.putVertex(builder, poseStack, face, r, g, b, a, light, x, y, z, u, v);
     }
 
-    private void putVertex(VertexConsumer builder, PoseStack poseStack, int r, int g, int b, int a, int light, float x, float y, float z, float u, float v) {
+    private void putVertex(VertexConsumer builder, PoseStack poseStack, Direction face, int r, int g, int b, int a, int light, float x, float y, float z, float u, float v) {
         builder.vertex(poseStack.last().pose(), x, y, z)
             .color(r, g, b, a)
             .uv(u, v)
+            .overlayCoords(OverlayTexture.NO_OVERLAY)
             .uv2(light)
+            .normal(poseStack.last().normal(), face.getStepX(), face.getStepY(), face.getStepZ())
             .endVertex();
     }
 

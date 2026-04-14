@@ -1,9 +1,9 @@
 package com.refinedmods.refinedpipes.config;
 
 import net.minecraftforge.common.ForgeConfigSpec;
-import net.minecraftforge.fluids.FluidAttributes;
 
 public class ServerConfig {
+    private static final int BUCKET_VOLUME_MB = 1000;
     private final ForgeConfigSpec.Builder builder = new ForgeConfigSpec.Builder();
     private final ForgeConfigSpec spec;
 
@@ -42,11 +42,11 @@ public class ServerConfig {
 
             builder.push("fluid");
             {
-                basicFluidPipe = new FluidPipe("basic", FluidAttributes.BUCKET_VOLUME, 100);
-                improvedFluidPipe = new FluidPipe("improved", FluidAttributes.BUCKET_VOLUME * 4, 400);
-                advancedFluidPipe = new FluidPipe("advanced", FluidAttributes.BUCKET_VOLUME * 8, 800);
-                eliteFluidPipe = new FluidPipe("elite", FluidAttributes.BUCKET_VOLUME * 16, 1600);
-                ultimateFluidPipe = new FluidPipe("ultimate", FluidAttributes.BUCKET_VOLUME * 32, 3200);
+                basicFluidPipe = new FluidPipe("basic", BUCKET_VOLUME_MB, 100);
+                improvedFluidPipe = new FluidPipe("improved", BUCKET_VOLUME_MB * 4, 400);
+                advancedFluidPipe = new FluidPipe("advanced", BUCKET_VOLUME_MB * 8, 800);
+                eliteFluidPipe = new FluidPipe("elite", BUCKET_VOLUME_MB * 16, 1600);
+                ultimateFluidPipe = new FluidPipe("ultimate", BUCKET_VOLUME_MB * 32, 3200);
             }
             builder.pop();
 

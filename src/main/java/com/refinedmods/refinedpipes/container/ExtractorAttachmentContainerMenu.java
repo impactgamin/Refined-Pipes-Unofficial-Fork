@@ -47,7 +47,7 @@ public class ExtractorAttachmentContainerMenu extends BaseContainerMenu {
         ItemStackHandler itemFilter,
         FluidInventory fluidFilter,
         boolean fluidMode) {
-        super(RefinedPipesContainerMenus.EXTRACTOR_ATTACHMENT, windowId, player);
+        super(RefinedPipesContainerMenus.EXTRACTOR_ATTACHMENT.get(), windowId, player);
 
         addPlayerInventory(8, 111);
 

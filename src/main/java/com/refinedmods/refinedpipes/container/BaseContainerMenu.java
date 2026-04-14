@@ -120,6 +120,11 @@ public class BaseContainerMenu extends AbstractContainerMenu {
     }
 
     @Override
+    public ItemStack quickMoveStack(Player player, int index) {
+        return ItemStack.EMPTY;
+    }
+
+    @Override
     public boolean canTakeItemForPickAll(ItemStack stack, Slot slot) {
         if (slot instanceof FilterSlot || slot instanceof FluidFilterSlot) {
             return false;
