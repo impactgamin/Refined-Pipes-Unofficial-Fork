@@ -2,7 +2,8 @@
 
 ## MIT License (original Refined Pipes)
 
-Copyright © 2020–2022 **Refined Mods** (https://refinedmods.com / https://github.com/refinedmods)
+Copyright © 2020–2022 **Refined Mods**  
+https://refinedmods.com / https://github.com/refinedmods
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
 documentation files (the “Software”), to deal in the Software without restriction, including without limitation the
@@ -21,6 +22,12 @@ WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 
-## Derivative / port (this repository)
+## Derivative / Port (this repository)
 
-This tree is a **fork and port** of the original **Refined Pipes** project (last upstream release targeting Minecraft 1.18.2). Gameplay and code design credit belong to **Refined Mods** and the original authors; this fork (**Arctic's Logistics**) exists to update and maintain compatibility for **Minecraft 1.20.1** and later, under the same **MIT** terms. When redistributing or publishing builds, keep this file and the upstream copyright notice intact.
+This project is an **unofficial fork and port** of the original **Refined Pipes** mod, originally developed by **Refined Mods** and its contributors.
+
+The upstream project targeted **Minecraft 1.18.2** and is no longer actively maintained. This repository exists to update, maintain, and improve compatibility for modern Minecraft versions (currently **1.20.1, Forge**).
+
+All original code and design credit belongs to **Refined Mods** and the original authors.
+
+This fork (**Arctic's Logistics**) is distributed under the same **MIT License** as the original project. When redistributing or publishing builds, this license file and the original copyright notice must be retained.
