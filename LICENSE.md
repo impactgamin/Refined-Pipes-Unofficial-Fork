@@ -30,4 +30,4 @@ The upstream project targeted **Minecraft 1.18.2** and is no longer actively mai
 
 All original code and design credit belongs to **Refined Mods** and the original authors.
 
-This fork (**Arctic's Logistics**) is distributed under the same **MIT License** as the original project. When redistributing or publishing builds, this license file and the original copyright notice must be retained.
+This fork is distributed under the same **MIT License** as the original project. When redistributing or publishing builds, this license file and the original copyright notice must be retained.
